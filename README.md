@@ -171,7 +171,7 @@ In the Verilog module `twoBitMultiplier`, these equations are realized using con
 
 The logic diagram shows the AND gates for partial products and the half-adders (XOR + AND for carry) that build P<sub>1</sub>, P<sub>2</sub>, and propagate carries to P<sub>3</sub>.
 
-![2-Bit Multiplier Circuit](imageAssets/twoBitMultiplierCircuit.png)
+![2-Bit Multiplier Circuit](imageAssets/2-bitMultiplierCircuit.png)
 
 ---
 
@@ -179,7 +179,7 @@ The logic diagram shows the AND gates for partial products and the half-adders (
 
 The behavioral simulation waveform shows A<sub>1</sub>, A<sub>0</sub>, B<sub>1</sub>, B<sub>0</sub> cycling through all 16 input combinations, with P<sub>3</sub>, P<sub>2</sub>, P<sub>1</sub>, P<sub>0</sub> giving the expected product for each pair (A, B).
 
-![2-Bit Multiplier Waveform](imageAssets/twoBitMultiplierWaveform.png)
+![2-Bit Multiplier Waveform](imageAssets/2-bitMultiplierWaveform.png)
 
 ---
 
