@@ -13,8 +13,8 @@ module twoBitMultiplier(
     wire c1,c2;
 
     assign P0 = A0 & B0;
-    assign P1 = (A1&B1) ^ (A0&B1);
-    assign c1 = (A1&B1) & (A0&B1);
+    assign P1 = (A1&B0) ^ (A0&B1);
+    assign c1 = (A1&B0) & (A0&B1);
     assign P2 = (A1&B1) ^ (c1);
     assign c2 = (A1&B1) & (c1);
     assign P3 = c2;    
