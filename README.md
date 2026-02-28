@@ -25,10 +25,10 @@ A Verilog implementation of a **2-bit binary multiplier** using half adders, dev
 A **2-bit multiplier** is a combinational circuit that **multiplies two 2-bit binary numbers** and produces a **4-bit product**. It has four inputs and four outputs:
 
 - **Inputs**
-  - **A** = A<sub>1</sub>A<sub>0</sub> — first 2-bit number (A<sub>1</sub> = MSB, A<sub>0</sub> = LSB).
-  - **B** = B<sub>1</sub>B<sub>0</sub> — second 2-bit number (B<sub>1</sub> = MSB, B<sub>0</sub> = LSB).
+  - **A** = A<sub>1</sub>A<sub>0</sub> (first 2-bit number: A<sub>1</sub> = MSB, A<sub>0</sub> = LSB).
+  - **B** = B<sub>1</sub>B<sub>0</sub> (second 2-bit number: B<sub>1</sub> = MSB, B<sub>0</sub> = LSB).
 - **Outputs**
-  - **P** = P<sub>3</sub>P<sub>2</sub>P<sub>1</sub>P<sub>0</sub> — 4-bit product (P<sub>3</sub> = MSB, P<sub>0</sub> = LSB).
+  - **P** = P<sub>3</sub>P<sub>2</sub>P<sub>1</sub>P<sub>0</sub> (4-bit product: P<sub>3</sub> = MSB, P<sub>0</sub> = LSB).
 
 So the circuit computes **P = A × B** where A and B range from 0 to 3, and P ranges from 0 to 9. The implementation uses **AND gates** for the partial products and **half adders** (XOR for sum, AND for carry) to add the weighted bits and propagate carries.
 
@@ -38,11 +38,9 @@ So the circuit computes **P = A × B** where A and B range from 0 to 3, and P ra
 
 The 2-bit multiplier implements:
 
-\[
-P = A \times B
-\]
+**P = A × B**
 
-where \(A = 2A_1 + A_0\), \(B = 2B_1 + B_0\), and \(P = 8P_3 + 4P_2 + 2P_1 + P_0\). The multiplication is performed the same way as pencil-and-paper (binary) multiplication: form partial products by multiplying A by each bit of B (with the appropriate weight), then add them. The result is expressed as four output bits and internal carries, as shown in the next section.
+where **A** = 2·A<sub>1</sub> + A<sub>0</sub>, **B** = 2·B<sub>1</sub> + B<sub>0</sub>, and **P** = 8·P<sub>3</sub> + 4·P<sub>2</sub> + 2·P<sub>1</sub> + P<sub>0</sub>. The multiplication is performed the same way as pencil-and-paper (binary) multiplication: form partial products by multiplying A by each bit of B (with the appropriate weight), then add them. The result is expressed as four output bits and internal carries, as shown in the next section.
 
 ---
 
@@ -60,38 +58,39 @@ Binary multiplication follows the same idea as multiplying two 2-digit decimal n
 | **b<sub>1</sub>** | MSB of second number (weight 2<sup>1</sup>) |
 
 So:
-- **A** = a<sub>1</sub>a<sub>0</sub> = 2·a<sub>1</sub> + a<sub>0</sub> (values 0–3).
-- **B** = b<sub>1</sub>b<sub>0</sub> = 2·b<sub>1</sub> + b<sub>0</sub> (values 0–3).
-- **P** = A × B = p<sub>3</sub>p<sub>2</sub>p<sub>1</sub>p<sub>0</sub> = 8·p<sub>3</sub> + 4·p<sub>2</sub> + 2·p<sub>1</sub> + p<sub>0</sub> (values 0–9).
+
+- **A** = a<sub>1</sub>a<sub>0</sub> = 2·a<sub>1</sub> + a<sub>0</sub> (values 0 to 3).
+- **B** = b<sub>1</sub>b<sub>0</sub> = 2·b<sub>1</sub> + b<sub>0</sub> (values 0 to 3).
+- **P** = A × B = p<sub>3</sub>p<sub>2</sub>p<sub>1</sub>p<sub>0</sub> = 8·p<sub>3</sub> + 4·p<sub>2</sub> + 2·p<sub>1</sub> + p<sub>0</sub> (values 0 to 9).
 
 ### How Multiplication Works (Position Weights)
 
 When we multiply **A × B**, we multiply A by each bit of B and assign a **weight** (power of 2) to each product based on the position of that bit in B.
 
-**Step 1 — Multiply A by b<sub>0</sub> (weight 2<sup>0</sup>):**
+**Step 1 - Multiply A by b<sub>0</sub> (weight 2<sup>0</sup>):**
 
-| Term        | Weight | Expression   | Contributes to |
-|-------------|--------|--------------|----------------|
-| a<sub>0</sub>·b<sub>0</sub> | 2<sup>0</sup> | LSB × LSB     | **p<sub>0</sub>** |
-| a<sub>1</sub>·b<sub>0</sub> | 2<sup>1</sup> | MSB × LSB     | **p<sub>1</sub>** (and possibly carry) |
+| Term | Weight | Expression | Contributes to |
+|------|--------|------------|----------------|
+| a<sub>0</sub>·b<sub>0</sub> | 2<sup>0</sup> | LSB × LSB | **p<sub>0</sub>** |
+| a<sub>1</sub>·b<sub>0</sub> | 2<sup>1</sup> | MSB × LSB | **p<sub>1</sub>** (and possibly carry) |
 
-**Step 2 — Multiply A by b<sub>1</sub> (weight 2<sup>1</sup>):**
+**Step 2 - Multiply A by b<sub>1</sub> (weight 2<sup>1</sup>):**
 
-| Term        | Weight | Expression   | Contributes to |
-|-------------|--------|--------------|----------------|
-| a<sub>0</sub>·b<sub>1</sub> | 2<sup>1</sup> | LSB × MSB     | **p<sub>1</sub>** (and possibly carry) |
-| a<sub>1</sub>·b<sub>1</sub> | 2<sup>2</sup> | MSB × MSB     | **p<sub>2</sub>** (and possibly carry) |
+| Term | Weight | Expression | Contributes to |
+|------|--------|------------|----------------|
+| a<sub>0</sub>·b<sub>1</sub> | 2<sup>1</sup> | LSB × MSB | **p<sub>1</sub>** (and possibly carry) |
+| a<sub>1</sub>·b<sub>1</sub> | 2<sup>2</sup> | MSB × MSB | **p<sub>2</sub>** (and possibly carry) |
 
 **Step 3 — Add terms by weight:**
 
 | Output bit | Weight | Sum of terms at this weight | Equation |
 |------------|--------|-----------------------------|----------|
-| **p<sub>0</sub>** | 2<sup>0</sup> | Only a<sub>0</sub>·b<sub>0</sub> | \(p_0 = a_0 \cdot b_0\) |
-| **p<sub>1</sub>** | 2<sup>1</sup> | a<sub>1</sub>·b<sub>0</sub> + a<sub>0</sub>·b<sub>1</sub> (plus any carry-in 0) | \(p_1 = (a_1 b_0) \oplus (a_0 b_1)\), carry c<sub>1</sub> from half adder |
-| **p<sub>2</sub>** | 2<sup>2</sup> | a<sub>1</sub>·b<sub>1</sub> + c<sub>1</sub> | \(p_2 = (a_1 b_1) \oplus c_1\), carry c<sub>2</sub> from half adder |
-| **p<sub>3</sub>** | 2<sup>3</sup> | c<sub>2</sub> only | \(p_3 = c_2\) |
+| **p<sub>0</sub>** | 2<sup>0</sup> | Only a<sub>0</sub>·b<sub>0</sub> | p<sub>0</sub> = a<sub>0</sub> · b<sub>0</sub> (AND) |
+| **p<sub>1</sub>** | 2<sup>1</sup> | a<sub>1</sub>·b<sub>0</sub> + a<sub>0</sub>·b<sub>1</sub> (plus carry-in 0) | p<sub>1</sub> = (a<sub>1</sub>·b<sub>0</sub>) XOR (a<sub>0</sub>·b<sub>1</sub>); carry c<sub>1</sub> from half adder |
+| **p<sub>2</sub>** | 2<sup>2</sup> | a<sub>1</sub>·b<sub>1</sub> + c<sub>1</sub> | p<sub>2</sub> = (a<sub>1</sub>·b<sub>1</sub>) XOR c<sub>1</sub>; carry c<sub>2</sub> from half adder |
+| **p<sub>3</sub>** | 2<sup>3</sup> | c<sub>2</sub> only | p<sub>3</sub> = c<sub>2</sub> |
 
-### Example: A = 11 (3), B = 10 (2) → P = 0110 (6)
+### Example: A = 11 (3), B = 10 (2), P = 0110 (6)
 
 | Weight | Contributing terms        | Sum (binary) | Result bit / carry |
 |--------|---------------------------|--------------|---------------------|
@@ -100,7 +99,7 @@ When we multiply **A × B**, we multiply A by each bit of B and assign a **weigh
 | 2<sup>2</sup> | a<sub>1</sub>·b<sub>1</sub> + c<sub>1</sub> = 1·1 + 0 = 1 | 1 | p<sub>2</sub> = 1, c<sub>2</sub> = 0 |
 | 2<sup>3</sup> | c<sub>2</sub> = 0 | 0 | p<sub>3</sub> = 0 |
 
-So P = 0110 = 6, which matches 3 × 2 = 6.
+So **P = 0110 = 6**, which matches 3 × 2 = 6.
 
 ---
 
@@ -150,18 +149,18 @@ The multiplier is built from **AND gates** (for partial products) and **half add
 
 | Output / internal | Equation | Implementation |
 |-------------------|----------|----------------|
-| **P<sub>0</sub>** | \(P_0 = A_0 \cdot B_0\) | Single AND gate |
-| **P<sub>1</sub>** | \(P_1 = (A_1 B_0) \oplus (A_0 B_1)\) | Two ANDs + half adder (XOR for sum) |
-| **c<sub>1</sub>** | \(c_1 = (A_1 B_0) \cdot (A_0 B_1)\) | Half adder carry (AND) |
-| **P<sub>2</sub>** | \(P_2 = (A_1 B_1) \oplus c_1\) | AND + half adder (XOR for sum) |
-| **c<sub>2</sub>** | \(c_2 = (A_1 B_1) \cdot c_1\) | Half adder carry (AND) |
-| **P<sub>3</sub>** | \(P_3 = c_2\) | Direct connection from carry |
+| **P<sub>0</sub>** | P<sub>0</sub> = A<sub>0</sub> · B<sub>0</sub> | Single AND gate |
+| **P<sub>1</sub>** | P<sub>1</sub> = (A<sub>1</sub>·B<sub>0</sub>) XOR (A<sub>0</sub>·B<sub>1</sub>) | Two ANDs + half adder (XOR for sum) |
+| **c<sub>1</sub>** | c<sub>1</sub> = (A<sub>1</sub>·B<sub>0</sub>) AND (A<sub>0</sub>·B<sub>1</sub>) | Half adder carry (AND) |
+| **P<sub>2</sub>** | P<sub>2</sub> = (A<sub>1</sub>·B<sub>1</sub>) XOR c<sub>1</sub> | AND + half adder (XOR for sum) |
+| **c<sub>2</sub>** | c<sub>2</sub> = (A<sub>1</sub>·B<sub>1</sub>) AND c<sub>1</sub> | Half adder carry (AND) |
+| **P<sub>3</sub>** | P<sub>3</sub> = c<sub>2</sub> | Direct connection from carry |
 
 Conceptually:
 
 1. **P<sub>0</sub>**: AND of the two LSBs (A<sub>0</sub>, B<sub>0</sub>).
-2. **P<sub>1</sub>**: Add the two products at weight 2<sup>1</sup> (A<sub>1</sub>B<sub>0</sub> and A<sub>0</sub>B<sub>1</sub>) with a half adder → sum gives P<sub>1</sub>, carry gives c<sub>1</sub>.
-3. **P<sub>2</sub>**: Add A<sub>1</sub>B<sub>1</sub> and c<sub>1</sub> with a half adder → sum gives P<sub>2</sub>, carry gives c<sub>2</sub>.
+2. **P<sub>1</sub>**: Add the two products at weight 2<sup>1</sup> (A<sub>1</sub>B<sub>0</sub> and A<sub>0</sub>B<sub>1</sub>) with a half adder; sum gives P<sub>1</sub>, carry gives c<sub>1</sub>.
+3. **P<sub>2</sub>**: Add A<sub>1</sub>B<sub>1</sub> and c<sub>1</sub> with a half adder; sum gives P<sub>2</sub>, carry gives c<sub>2</sub>.
 4. **P<sub>3</sub>**: Equals c<sub>2</sub> (no further addition at 2<sup>3</sup>).
 
 In the Verilog module `twoBitMultiplier`, these equations are realized using continuous assignments (`assign`) with bitwise AND (`&`) and XOR (`^`). Ports are: inputs `A0`, `A1`, `B0`, `B1`; outputs `P0`, `P1`, `P2`, `P3`.
@@ -226,7 +225,7 @@ Follow these steps to open the project in **Vivado** and run the simulation.
 
 ### 2. Create a New RTL Project
 
-1. Click **Create Project** (or **File → Project → New**).
+1. Click **Create Project** (or **File** > **Project** > **New**).
 2. Click **Next** on the welcome page.
 3. Choose **RTL Project** and leave **Do not specify sources at this time** unchecked if you plan to add sources immediately.
 4. Click **Next**.
@@ -235,12 +234,12 @@ Follow these steps to open the project in **Vivado** and run the simulation.
 
 1. In the **Add Sources** step, add the Verilog design files:
    - **Design sources:**
-     - `twoBitMultiplier.v` — 2-bit multiplier module (inputs A0, A1, B0, B1; outputs P0, P1, P2, P3).
+     - `twoBitMultiplier.v` - 2-bit multiplier module (inputs A0, A1, B0, B1; outputs P0, P1, P2, P3).
    - **Simulation sources:**
-     - `twoBitMultiplier_tb.v` — testbench that applies all 16 input combinations and prints A, B, and P.
+     - `twoBitMultiplier_tb.v` - testbench that applies all 16 input combinations and prints A, B, and P.
 2. Set the testbench as the **top module for simulation**:
-   - In the **Sources** window, under **Simulation Sources**, right-click `twoBitMultiplier_tb.v` → **Set as Top**.
-3. Click **Next**, choose a suitable **target device** (or leave default / "Don't specify" for simulation-only), then **Next → Finish**.
+   - In the **Sources** window, under **Simulation Sources**, right-click `twoBitMultiplier_tb.v` and choose **Set as Top**.
+3. Click **Next**, choose a suitable **target device** (or leave default / "Don't specify" for simulation-only), then **Next** and **Finish**.
 
 ### 4. Run Behavioral Simulation
 
@@ -252,14 +251,14 @@ Follow these steps to open the project in **Vivado** and run the simulation.
 
 ### 5. (Optional) Re-run or Modify the Design
 
-- To re-run: **Flow Navigator → Simulation → Run Behavioral Simulation** (or the re-run icon in the simulation toolbar).
+- To re-run: **Flow Navigator** > **Simulation** > **Run Behavioral Simulation** (or the re-run icon in the simulation toolbar).
 - To change the design or testbench: edit `twoBitMultiplier.v` or `twoBitMultiplier_tb.v`, save, then re-run behavioral simulation.
 
 ### 6. (Optional) Synthesis, Implementation, and Bitstream
 
 To map the design to an FPGA:
 
-1. In **Sources**, right-click the top-level RTL module (`twoBitMultiplier.v`) → **Set as Top** (for synthesis/implementation).
+1. In **Sources**, right-click the top-level RTL module (`twoBitMultiplier.v`) and choose **Set as Top** (for synthesis/implementation).
 2. Run **Synthesis** from the Flow Navigator.
 3. Run **Implementation**.
 4. Create or edit a constraints file (e.g. `.xdc`) to assign pins for A0, A1, B0, B1, P0, P1, P2, P3.
@@ -269,8 +268,8 @@ To map the design to an FPGA:
 
 ## Project Files
 
-- `twoBitMultiplier.v` — RTL for the 2-bit multiplier \((A_1, A_0, B_1, B_0) \rightarrow (P_3, P_2, P_1, P_0)\).
-- `twoBitMultiplier_tb.v` — testbench for the 2-bit multiplier; applies all 16 input combinations and prints A, B, and P.
+- `twoBitMultiplier.v` - RTL for the 2-bit multiplier: (A<sub>1</sub>, A<sub>0</sub>, B<sub>1</sub>, B<sub>0</sub>) -> (P<sub>3</sub>, P<sub>2</sub>, P<sub>1</sub>, P<sub>0</sub>).
+- `twoBitMultiplier_tb.v` - testbench for the 2-bit multiplier; applies all 16 input combinations and prints A, B, and P.
 
 ---
 
