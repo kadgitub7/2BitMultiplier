@@ -92,7 +92,7 @@ When we multiply **A × B**, we multiply A by each bit of B and assign a **weigh
 
 Below is a hand written diagram of how binary multiplication works using 2 bit numbers.
 
-![2-Bit Multiplier Steps](imageAssets/2-bitMultipliesBinaryMultiplicationSteps.png)
+![2-Bit Multiplier Steps](imageAssets/2-bitMultipliesBinaryMultiplicationSteps.jpg)
 
 ### Example: A = 11 (3), B = 10 (2), P = 0110 (6)
 
