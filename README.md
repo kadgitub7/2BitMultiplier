@@ -90,6 +90,10 @@ When we multiply **A × B**, we multiply A by each bit of B and assign a **weigh
 | **p<sub>2</sub>** | 2<sup>2</sup> | a<sub>1</sub>·b<sub>1</sub> + c<sub>1</sub> | p<sub>2</sub> = (a<sub>1</sub>·b<sub>1</sub>) XOR c<sub>1</sub>; carry c<sub>2</sub> from half adder |
 | **p<sub>3</sub>** | 2<sup>3</sup> | c<sub>2</sub> only | p<sub>3</sub> = c<sub>2</sub> |
 
+Below is a hand written diagram of how binary multiplication works using 2 bit numbers.
+
+![2-Bit Multiplier Steps](imageAssets/2-bitMultipliesBinaryMultiplicationSteps.png)
+
 ### Example: A = 11 (3), B = 10 (2), P = 0110 (6)
 
 | Weight | Contributing terms        | Sum (binary) | Result bit / carry |
