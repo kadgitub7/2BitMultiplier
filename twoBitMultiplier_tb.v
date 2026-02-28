@@ -2,7 +2,7 @@
 
 module twoBitMultiplier_tb();
 
-    reg[1:0] A0,A1,B0,B1;
+    reg A0,A1,B0,B1;
     wire P0,P1,P2,P3,c1,c2;
     
     twoBitMultiplier utt(A0,A1,B0,B1,P0,P1,P2,P3);
